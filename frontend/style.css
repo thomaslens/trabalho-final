@@ -1,0 +1,104 @@
+/* reset simples */
+* { box-sizing: border-box; font-family: system-ui, Arial, sans-serif; }
+
+/* fundo escuro */
+body { margin: 0; background: #0f172a; color: #e2e8f0; }
+
+.container {
+  width: min(900px, 92%);
+  margin: 32px auto;
+}
+
+header { text-align: center; margin-bottom: 18px; }
+h1 { margin: 0; font-size: 2rem; }
+#subtitle { color: #94a3b8; margin-top: 6px; }
+
+/* cards */
+.card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.25);
+}
+
+/* forms */
+.form { display: grid; gap: 8px; margin-top: 10px; }
+input, textarea, select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+/* botões */
+.btn {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #334155;
+  color: #fff;
+  font-weight: 600;
+}
+.btn.primary { background: #22c55e; color: #052e16; }
+.btn:hover { filter: brightness(1.08); }
+
+/* abas */
+.tabs { display: flex; gap: 8px; }
+.tab {
+  flex: 1;
+  background: #0b1220;
+  border: 1px solid #334155;
+  padding: 8px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+.tab.active {
+  background: #22c55e;
+  color: #052e16;
+  border-color: #22c55e;
+}
+
+.hidden { display: none; }
+
+/* feedback */
+.feedback {
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.feedback.success { background: #16a34a; color: #052e16; }
+.feedback.error { background: #ef4444; color: #fff; }
+
+.row { display: flex; align-items: center; gap: 12px; }
+.space-between { justify-content: space-between; }
+
+.task-list { list-style: none; padding: 0; margin-top: 12px; display: grid; gap: 8px; }
+
+/* item tarefa */
+.task {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  background: #0b1220;
+}
+.task h4 { margin: 0 0 4px 0; }
+.task small { color: #94a3b8; }
+.task-actions { display: flex; gap: 6px; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: .8rem;
+  background: #334155;
+  color: #e2e8f0;
+}

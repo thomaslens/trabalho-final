@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>✅ Task Manager</h1>
+      <p id="subtitle">Faça login para continuar</p>
+    </header>
+
+    <!-- Feedback -->
+    <div id="feedback" class="feedback hidden"></div>
+
+    <!-- Auth -->
+    <section id="auth-section" class="card">
+      <div class="tabs">
+        <button id="tab-login" class="tab active">Login</button>
+        <button id="tab-register" class="tab">Cadastro</button>
+      </div>
+
+      <!-- Login -->
+      <form id="login-form" class="form">
+        <label>Email</label>
+        <input type="email" id="login-email" required />
+
+        <label>Senha</label>
+        <input type="password" id="login-password" required />
+
+        <button type="submit" class="btn primary">Entrar</button>
+      </form>
+
+      <!-- Register -->
+      <form id="register-form" class="form hidden">
+        <label>Nome</label>
+        <input type="text" id="register-name" required />
+
+        <label>Email</label>
+        <input type="email" id="register-email" required />
+
+        <label>Senha</label>
+        <input type="password" id="register-password" required />
+
+        <button type="submit" class="btn primary">Cadastrar</button>
+      </form>
+    </section>
+
+    <!-- App -->
+    <section id="app-section" class="hidden">
+      <div class="row space-between">
+        <h2>Minhas tarefas</h2>
+        <button id="logout-btn" class="btn">Sair</button>
+      </div>
+
+      <!-- New task -->
+      <div class="card">
+        <h3>Nova tarefa</h3>
+        <form id="task-form" class="form">
+          <label>Título</label>
+          <input type="text" id="task-title" required />
+
+          <label>Descrição</label>
+          <textarea id="task-desc" rows="2"></textarea>
+
+          <label>Status</label>
+          <select id="task-status">
+            <option>A fazer</option>
+            <option>Em andamento</option>
+            <option>Concluída</option>
+          </select>
+
+          <button type="submit" class="btn primary">Criar</button>
+        </form>
+      </div>
+
+      <!-- List -->
+      <ul id="task-list" class="task-list"></ul>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

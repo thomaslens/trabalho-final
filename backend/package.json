@@ -1,0 +1,20 @@
+{
+    "name": "task-manager-backend",
+    "version": "1.0.0",
+    "main": "src/server.js",
+    "type": "module",
+    "scripts": {
+        // dev: roda em modo desenvolvimento e reinicia ao salvar
+        "dev": "node --watch src/server.js",
+        // start: roda normalmente
+        "start": "node src/server.js"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3", // para criptografar senha
+        "cors": "^2.8.5", // permitir frontend acessar backend
+        "dotenv": "^16.4.5", // ler .env
+        "express": "^4.19.2", // framework de rotas
+        "jsonwebtoken": "^9.0.2", // JWT
+        "mysql2": "^3.11.0" // driver MySQL (versão com promises)
+    }
+}
