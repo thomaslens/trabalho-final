@@ -65,6 +65,13 @@ export async function login(req, res) {
     if (rows.length === 0) {
       return res.status(401).json({ message: "Credenciais inválidas." });
     }
+    if (rows.length === 0) {
+      // aqui é quando NÃO existe usuário com esse email
+      return res.status(404).json({
+        message: "Usuário não cadastrado. Verifique o email ou faça o cadastro."
+      });
+    }
+    
 
     const user = rows[0];
 

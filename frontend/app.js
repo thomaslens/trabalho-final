@@ -1,5 +1,5 @@
 // URL base da API
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3306";
 
 // Elementos HTML
 const feedbackEl = document.getElementById("feedback");
