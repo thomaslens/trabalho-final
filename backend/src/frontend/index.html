@@ -72,8 +72,16 @@
             <option>Em andamento</option>
             <option>Concluída</option>
           </select>
-
+          
+          <label>Data do compromisso</label>
+          <input type="date" id="task-date"/>
+          
+          <label>Hora do compromisso</label>
+          <input type="time" id="task-time"/>
+          
           <button type="submit" class="btn primary">Criar</button>
+          
+          
         </form>
       </div>
 
@@ -81,6 +89,46 @@
       <ul id="task-list" class="task-list"></ul>
     </section>
   </main>
+  <!-- ===== Modal de edição ===== -->
+<div id="edit-modal" class="modal hidden">
+  <div class="modal-backdrop"></div>
+
+  <div class="modal-card">
+    <header class="modal-header">
+      <h3>Editar tarefa</h3>
+      <button id="edit-close" class="modal-close">×</button>
+    </header>
+
+    <form id="edit-form" class="form">
+      <input type="hidden" id="edit-id" />
+
+      <label>Novo título</label>
+      <input type="text" id="edit-title" required />
+
+      <label>Nova descrição</label>
+      <textarea id="edit-desc" rows="2"></textarea>
+
+      <label>Novo status</label>
+      <select id="edit-status">
+        <option>A fazer</option>
+        <option>Em andamento</option>
+        <option>Concluída</option>
+      </select>
+
+      <label>Data do compromisso</label>
+      <input type="date" id="edit-date" />
+
+      <label>Hora do compromisso</label>
+      <input type="time" id="edit-time" />
+
+      <div class="modal-actions">
+        <button type="button" id="edit-cancel" class="btn">Cancelar</button>
+        <button type="submit" class="btn primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
   <script src="app.js"></script>
 </body>

@@ -24,7 +24,9 @@ export async function getTasks(req, res) {
 // POST /tasks -> cria tarefa
 export async function createTask(req, res) {
   const userId = req.user.id;
-  const { titulo, descricao, status } = req.body;
+  // além de título/descrição/status, agora também recebemos data/hora
+const { titulo, descricao, status, data_compromisso, hora_compromisso } = req.body;
+
 
   if (!titulo) {
     return res.status(400).json({ message: "Título é obrigatório." });
@@ -35,10 +37,21 @@ export async function createTask(req, res) {
     status && VALID_STATUS.includes(status) ? status : "A fazer";
 
   try {
-    const [result] = await pool.query(
-      "INSERT INTO tarefas (usuario_id, titulo, descricao, status) VALUES (?, ?, ?, ?)",
-      [userId, titulo, descricao || null, finalStatus]
-    );
+    // INSERT agora inclui data e hora do compromisso
+const [result] = await pool.query(
+  `INSERT INTO tarefas
+   (usuario_id, titulo, descricao, status, data_compromisso, hora_compromisso)
+   VALUES (?, ?, ?, ?, ?, ?)`,
+  [
+    userId,
+    titulo,
+    descricao || null,
+    finalStatus,
+    data_compromisso || null, // se não veio, salva null
+    hora_compromisso || null
+  ]
+);
+
 
     // buscar tarefa criada
     const [rows] = await pool.query(
@@ -61,7 +74,8 @@ export async function createTask(req, res) {
 export async function updateTask(req, res) {
   const userId = req.user.id;
   const taskId = Number(req.params.id);
-  const { titulo, descricao, status } = req.body;
+  const { titulo, descricao, status, data_compromisso, hora_compromisso } = req.body;
+
 
   if (status && !VALID_STATUS.includes(status)) {
     return res.status(400).json({ message: "Status inválido." });
@@ -81,20 +95,26 @@ export async function updateTask(req, res) {
     const current = existing[0];
 
     // 2) atualizar (manter antigos se não vier novo)
-    await pool.query(
-      `UPDATE tarefas
-       SET titulo = ?,
-           descricao = ?,
-           status = ?
-       WHERE id = ? AND usuario_id = ?`,
-      [
-        titulo ?? current.titulo,
-        descricao ?? current.descricao,
-        status ?? current.status,
-        taskId,
-        userId
-      ]
-    );
+    // UPDATE agora também permite mudar data e hora
+await pool.query(
+  `UPDATE tarefas
+   SET titulo = ?,
+       descricao = ?,
+       status = ?,
+       data_compromisso = ?,
+       hora_compromisso = ?
+   WHERE id = ? AND usuario_id = ?`,
+  [
+    titulo ?? current.titulo,
+    descricao ?? current.descricao,
+    status ?? current.status,
+    data_compromisso ?? current.data_compromisso,
+    hora_compromisso ?? current.hora_compromisso,
+    taskId,
+    userId
+  ]
+);
+
 
     // 3) devolver tarefa atualizada
     const [updated] = await pool.query(

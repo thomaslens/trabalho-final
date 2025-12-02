@@ -31,3 +31,8 @@ CREATE TABLE IF NOT EXISTS tarefas (
 
 -- índice para acelerar consultas por usuário
 CREATE INDEX idx_tarefas_usuario ON tarefas(usuario_id);
+USE task_manager;
+
+ALTER TABLE tarefas
+  ADD COLUMN data_compromisso DATE NULL,
+  ADD COLUMN hora_compromisso TIME NULL;

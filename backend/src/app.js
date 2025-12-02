@@ -4,16 +4,22 @@ import authRoutes from "./routes/auth.routes.js"
 import tasksRoutes from "./routes/tasks.routes.js";
 
 const app = express();
-
+app.use(express.json());
+// app.use(express.static('frontend'))
 // // libera CORS
-app.use(cors()); 
+const corsOptions = {
+    origin:'http://127.0.0.1:5500',
+    optionsSuccessStatus: 200,
+}; 
+app.use(cors(corsOptions)); 
+
 // usado quando o front e o backend estao em dominios diferentes
 
 // body JSON
-app.use(express.json());
+
 
 // rota teste
-app.get("/", (req, res) =>res.send("API Task Manager OK"));
+//app.get("/", (req, res) =>res.send("API Task Manager OK"));
 
 // prefixos
 app.use("/auth", authRoutes);

@@ -6,3 +6,4 @@ const router = Router();
 // público
 router.post("/register", register);
 router.post("/login", login);
+export default router;
