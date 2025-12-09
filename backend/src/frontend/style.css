@@ -167,3 +167,45 @@ input, textarea, select {
   gap: 8px;
   margin-top: 8px;
 }
+/* ===== cores por status da tarefa ===== */
+.task.status-a-fazer {
+  background: rgba(239, 68, 68, 0.12);   /* vermelho bem suave */
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.task.status-em-andamento {
+  background: rgba(234, 179, 8, 0.12);   /* amarelo bem suave */
+  border-color: rgba(234, 179, 8, 0.35);
+}
+
+.task.status-concluida {
+  background: rgba(34, 197, 94, 0.12);   /* verde bem suave */
+  border-color: rgba(34, 197, 94, 0.35);
+}
+/* ===== Toggle Concluídas ===== */
+.done-header {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.done-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.done-title {
+  margin: 0;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* quando estiver minimizado */
+.task-list.collapsed {
+  display: none;
+}

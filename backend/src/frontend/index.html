@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Task Manager</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <main class="container">
     <header>
@@ -72,64 +74,78 @@
             <option>Em andamento</option>
             <option>Concluída</option>
           </select>
-          
+
           <label>Data do compromisso</label>
-          <input type="date" id="task-date"/>
-          
+          <input type="date" id="task-date" />
+
           <label>Hora do compromisso</label>
-          <input type="time" id="task-time"/>
-          
+          <input type="time" id="task-time" />
+
           <button type="submit" class="btn primary">Criar</button>
-          
-          
+
+
         </form>
       </div>
 
       <!-- List -->
-      <ul id="task-list" class="task-list"></ul>
+      <h3 style="margin-top:12px;">📌 Tarefas ativas</h3>
+      <ul id="task-list-active" class="task-list"></ul>
+
+      <!-- Cabeçalho clicável das concluídas -->
+      <div id="done-header" class="done-header" style="margin-top:18px;">
+        <h3 class="done-title">
+          <span id="done-arrow">▼</span>
+          ✅ Concluídas
+        </h3>
+      </div>
+
+      <ul id="task-list-done" class="task-list"></ul>
+
+
     </section>
   </main>
   <!-- ===== Modal de edição ===== -->
-<div id="edit-modal" class="modal hidden">
-  <div class="modal-backdrop"></div>
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
 
-  <div class="modal-card">
-    <header class="modal-header">
-      <h3>Editar tarefa</h3>
-      <button id="edit-close" class="modal-close">×</button>
-    </header>
+    <div class="modal-card">
+      <header class="modal-header">
+        <h3>Editar tarefa</h3>
+        <button id="edit-close" class="modal-close">×</button>
+      </header>
 
-    <form id="edit-form" class="form">
-      <input type="hidden" id="edit-id" />
+      <form id="edit-form" class="form">
+        <input type="hidden" id="edit-id" />
 
-      <label>Novo título</label>
-      <input type="text" id="edit-title" required />
+        <label>Novo título</label>
+        <input type="text" id="edit-title" required />
 
-      <label>Nova descrição</label>
-      <textarea id="edit-desc" rows="2"></textarea>
+        <label>Nova descrição</label>
+        <textarea id="edit-desc" rows="2"></textarea>
 
-      <label>Novo status</label>
-      <select id="edit-status">
-        <option>A fazer</option>
-        <option>Em andamento</option>
-        <option>Concluída</option>
-      </select>
+        <label>Novo status</label>
+        <select id="edit-status">
+          <option>A fazer</option>
+          <option>Em andamento</option>
+          <option>Concluída</option>
+        </select>
 
-      <label>Data do compromisso</label>
-      <input type="date" id="edit-date" />
+        <label>Data do compromisso</label>
+        <input type="date" id="edit-date" />
 
-      <label>Hora do compromisso</label>
-      <input type="time" id="edit-time" />
+        <label>Hora do compromisso</label>
+        <input type="time" id="edit-time" />
 
-      <div class="modal-actions">
-        <button type="button" id="edit-cancel" class="btn">Cancelar</button>
-        <button type="submit" class="btn primary">Salvar</button>
-      </div>
-    </form>
+        <div class="modal-actions">
+          <button type="button" id="edit-cancel" class="btn">Cancelar</button>
+          <button type="submit" class="btn primary">Salvar</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
 
   <script src="app.js"></script>
 </body>
+
 </html>

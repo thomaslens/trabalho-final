@@ -14,7 +14,9 @@ const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
 
 const taskForm = document.getElementById("task-form");
-const taskList = document.getElementById("task-list");
+const taskListActive = document.getElementById("task-list-active");
+const taskListDone = document.getElementById("task-list-done");
+
 const logoutBtn = document.getElementById("logout-btn");
 // ===== Modal de edição =====
 const editModal = document.getElementById("edit-modal");
@@ -28,6 +30,23 @@ const editDesc = document.getElementById("edit-desc");
 const editStatus = document.getElementById("edit-status");
 const editDate = document.getElementById("edit-date");
 const editTime = document.getElementById("edit-time");
+
+const doneHeader = document.getElementById("done-header");
+const doneArrow = document.getElementById("done-arrow");
+
+let doneCollapsed = false;
+
+doneHeader.onclick = () => {
+  doneCollapsed = !doneCollapsed;
+
+  if (doneCollapsed) {
+    taskListDone.classList.add("collapsed");
+    doneArrow.textContent = "▶"; // fechado
+  } else {
+    taskListDone.classList.remove("collapsed");
+    doneArrow.textContent = "▼"; // aberto
+  }
+};
 
 
 // ===== Helpers =====
@@ -105,7 +124,7 @@ registerForm.onsubmit = async (e) => {
 
   const res = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ nome, email, senha })
   });
 
@@ -126,7 +145,7 @@ loginForm.onsubmit = async (e) => {
 
   const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, senha })
   });
 
@@ -160,55 +179,67 @@ async function loadTasks() {
 
   if (!res.ok) {
     showFeedback(data.message || "Erro ao carregar tarefas", "error");
-    if (res.status === 401) { clearToken(); showAuth(); }
+  
+    // ✅ não derruba a sessão automaticamente
+    // só avisa que algo está errado com o token
+    if (res.status === 401) {
+      showFeedback("Sessão inválida. Faça login de novo.", "error");
+    }
+  
     return;
   }
-
+  
   renderTasks(data);
 }
 
 // renderiza tarefas
 function renderTasks(tasks) {
-  // limpa a lista antes de renderizar de novo
-  taskList.innerHTML = "";
+  // limpa as duas listas
+  taskListActive.innerHTML = "";
+  taskListDone.innerHTML = "";
 
-  // se não tiver tarefas, mostra mensagem simples
+  // separa tarefas ativas e concluídas
+  const activeTasks = tasks.filter(t => t.status !== "Concluída");
+  const doneTasks = tasks.filter(t => t.status === "Concluída");
+
+  // renderiza cada grupo
+  renderTaskGroup(activeTasks, taskListActive, "Nenhuma tarefa ativa.");
+  renderTaskGroup(doneTasks, taskListDone, "Nenhuma concluída ainda.");
+}
+function renderTaskGroup(tasks, listEl, emptyText) {
   if (tasks.length === 0) {
     const emptyLi = document.createElement("li");
     emptyLi.className = "card";
-    emptyLi.textContent = "Nenhuma tarefa ainda.";
-    taskList.appendChild(emptyLi);
+    emptyLi.textContent = emptyText;
+    listEl.appendChild(emptyLi);
     return;
   }
 
-  // percorre tarefa por tarefa
   tasks.forEach(task => {
-
-    // 1) cria o <li> principal
     const li = document.createElement("li");
     li.className = "task";
 
-    // 2) cria a coluna da esquerda (conteúdo)
+    // ✅ cores por status (o que você já fez)
+    if (task.status === "A fazer") li.classList.add("status-a-fazer");
+    else if (task.status === "Em andamento") li.classList.add("status-em-andamento");
+    else if (task.status === "Concluída") li.classList.add("status-concluida");
+
     const leftDiv = document.createElement("div");
 
-    // 3) título da tarefa
     const title = document.createElement("h4");
     title.textContent = task.titulo;
     leftDiv.appendChild(title);
 
-    // 4) descrição (se não tiver, deixa vazio)
     const desc = document.createElement("small");
     desc.textContent = task.descricao || "";
     leftDiv.appendChild(desc);
 
-    // 5) data/hora formatadas
     const dataFormatada = task.data_compromisso
       ? new Date(task.data_compromisso).toLocaleDateString("pt-BR")
       : "Sem data";
 
     const horaFormatada = task.hora_compromisso || "Sem hora";
 
-    // 6) cria o elemento que mostra data/hora
     const dateTimeSmall = document.createElement("small");
     dateTimeSmall.style.display = "block";
     dateTimeSmall.style.marginTop = "6px";
@@ -216,7 +247,6 @@ function renderTasks(tasks) {
     dateTimeSmall.textContent = `📅 ${dataFormatada}  ⏰ ${horaFormatada}`;
     leftDiv.appendChild(dateTimeSmall);
 
-    // 7) badge de status
     const badgeWrap = document.createElement("div");
     badgeWrap.style.marginTop = "6px";
 
@@ -227,17 +257,14 @@ function renderTasks(tasks) {
     badgeWrap.appendChild(badge);
     leftDiv.appendChild(badgeWrap);
 
-    // 8) cria a coluna da direita (botões)
     const actionsDiv = document.createElement("div");
     actionsDiv.className = "task-actions";
 
-    // botão editar
     const editBtn = document.createElement("button");
     editBtn.className = "btn";
     editBtn.textContent = "Editar";
     editBtn.onclick = () => openEdit(task);
 
-    // botão excluir
     const delBtn = document.createElement("button");
     delBtn.className = "btn";
     delBtn.textContent = "Excluir";
@@ -246,14 +273,14 @@ function renderTasks(tasks) {
     actionsDiv.appendChild(editBtn);
     actionsDiv.appendChild(delBtn);
 
-    // 9) monta o li final
     li.appendChild(leftDiv);
     li.appendChild(actionsDiv);
 
-    // 10) adiciona na lista
-    taskList.appendChild(li);
+    listEl.appendChild(li);
   });
 }
+
+
 
 // ===== POST task =====
 taskForm.onsubmit = async (e) => {
@@ -276,7 +303,7 @@ taskForm.onsubmit = async (e) => {
       data_compromisso: data_compromisso || null,
       hora_compromisso: hora_compromisso || null
     })
-    
+
   });
 
   const data = await res.json();
@@ -289,29 +316,29 @@ taskForm.onsubmit = async (e) => {
 
 // ===== PUT task =====
 function openEdit(task) {
-openModal(task)
-editClose.onclick = closeModal;
-editCancel.onclick = closeModal;
+  openModal(task)
+  editClose.onclick = closeModal;
+  editCancel.onclick = closeModal;
 
-// fecha se clicar fora do card
-editModal.querySelector(".modal-backdrop").onclick = closeModal;
+  // fecha se clicar fora do card
+  editModal.querySelector(".modal-backdrop").onclick = closeModal;
 
-editForm.onsubmit = async (e) => {
-  e.preventDefault();
+  editForm.onsubmit = async (e) => {
+    e.preventDefault();
 
-  const id = editId.value;
+    const id = editId.value;
 
-  const payload = {
-    titulo: editTitle.value,
-    descricao: editDesc.value,
-    status: editStatus.value,
-    data_compromisso: editDate.value || null,
-    hora_compromisso: editTime.value || null
+    const payload = {
+      titulo: editTitle.value,
+      descricao: editDesc.value,
+      status: editStatus.value,
+      data_compromisso: editDate.value || null,
+      hora_compromisso: editTime.value || null
+    };
+
+    await updateTask(id, payload);
+    closeModal();
   };
-
-  await updateTask(id, payload);
-  closeModal();
-};
 
 }
 
